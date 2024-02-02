@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/mssql/server:2022-CU11-ubuntu-22.04
+
+ENV SA_PASSWORD 01B7B43A-9860-4234-8B76-CDA4D3D82F53
+ENV ACCEPT_EULA Y
+ENV MSSQL_PID Express
+
+WORKDIR ./SqlServer
+
+COPY . .
+
