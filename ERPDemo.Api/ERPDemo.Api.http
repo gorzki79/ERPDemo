@@ -1,0 +1,6 @@
+@ERPDemo.Api_HostAddress = https://localhost:8080/Trucks
+
+GET {{ERPDemo.Api_HostAddress}}/
+Accept: application/json
+
+###
