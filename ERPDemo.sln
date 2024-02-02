@@ -11,9 +11,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPDemo.Core", "ERPDemo.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPDemo.Persistence", "ERPDemo.Persistence\ERPDemo.Persistence.csproj", "{E3ADBC36-4C76-4890-81E3-8BA355B20830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPDemo.Infrastructure", "ERPDemo.Infrastructure\ERPDemo.Infrastructure.csproj", "{D74F792E-E086-46A9-8ED8-D17D71A11A78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPDemo.Infrastructure", "ERPDemo.Infrastructure\ERPDemo.Infrastructure.csproj", "{D74F792E-E086-46A9-8ED8-D17D71A11A78}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B642A194-A994-4D96-99D7-714B742657DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ERPDemo.DB", "ERPDemo.DB", "{39F6CEA6-E8A7-48BC-87EB-0B85CB194232}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{438156FA-FCF3-4892-975F-359AE7599464}"
+	ProjectSection(SolutionItems) = preProject
+		ERPDemo.DB\scripts\Trucks.sql = ERPDemo.DB\scripts\Trucks.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +55,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{438156FA-FCF3-4892-975F-359AE7599464} = {39F6CEA6-E8A7-48BC-87EB-0B85CB194232}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A961630D-869F-46CE-B42F-415264D145E5}
