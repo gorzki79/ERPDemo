@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Server=localhost; Database=ERPDB; Trusted_Connection=False;TrustServerCertificate=True;user id=SA;password=01B7B43A-9860-4234-8B76-CDA4D3D82F53;" Microsoft.EntityFrameworkCore.SqlServer -Project ERPDemo.Persistence -o Data\Entities -Context ErpDemoDbContext -t TruckStatuses,Trucks  -d -f
