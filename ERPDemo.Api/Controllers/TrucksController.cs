@@ -1,3 +1,5 @@
+using ERPDemo.Application.Commands;
+using ERPDemo.Application.Commands.Args;
 using ERPDemo.Application.Queries;
 using ERPDemo.Application.Queries.Dto;
 using MediatR;
@@ -36,11 +38,15 @@ namespace ERPDemo.Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateTruckAsync()
+        public async Task<IActionResult> CreateTruckAsync([FromBody] CreateTruckArgs args)
         {
-            throw new NotImplementedException();
-           
+            var command = new CreateTruckCommand(args);
+            await this.mediator.Send(command);
+            var query = new GetTruckQuery(args.Code);
+            var result = await this.mediator.Send(query);
+            return CreatedAtAction(nameof(GetTruckAsync), new { code = args.Code }, result);
         }
+
 
         [HttpPut]
         [Route("{truckCode}")]

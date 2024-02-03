@@ -1,4 +1,6 @@
-﻿using ERPDemo.Persistence.Data.Entities;
+﻿using ERPDemo.Core.Repositories;
+using ERPDemo.Persistence.Data.Entities;
+using ERPDemo.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,8 @@ namespace ERPDemo.Persistence
                 options.EnableSensitiveDataLogging(configuration.GetValue<bool>("SqlLogSensitiveData"));
                 options.UseSqlServer(configuration.GetConnectionString("ERPDb"));
             });
+
+            services.AddTransient<ITruckRepository, TruckRepository>();
 
             return services;
         }
