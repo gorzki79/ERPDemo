@@ -1,4 +1,5 @@
 using ERPDemo.Persistence;
+using ERPDemo.Persistence.Query.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistence();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblies(typeof(GetTrucksQueryHandler).Assembly);
+});
 
 
 var app = builder.Build();
