@@ -1,4 +1,5 @@
 using ERPDemo.Application.Commands.Handlers;
+using ERPDemo.Infrastructure;
 using ERPDemo.Persistence;
 using ERPDemo.Persistence.Query.Handlers;
 
@@ -14,7 +15,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddPersistence();
+builder.Services.AddInfrastructure();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblies(typeof(GetTrucksQueryHandler).Assembly);
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseInfrastructure();
 
 app.MapControllers();
 
