@@ -23,9 +23,15 @@ namespace ERPDemo.Persistence.Repositories
             await this.erpDemoDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public Task DeleteTruckAsync(TruckId truckId, CancellationToken cancellationToken)
+        public async Task DeleteTruckAsync(TruckId truckId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var truckToRemove = await this.erpDemoDbContext.Trucks.SingleOrDefaultAsync(t => t.Code == truckId.Value);
+            if (truckToRemove is not null)
+            {
+                this.erpDemoDbContext.Trucks.Remove(truckToRemove);
+                await this.erpDemoDbContext.SaveChangesAsync(cancellationToken);
+            }
+
         }
 
         public Task<Truck> GetTruckAsync(TruckId truckId, CancellationToken cancellationToken)

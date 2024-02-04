@@ -41,8 +41,8 @@ namespace ERPDemo.Api.Controllers
         public async Task<IActionResult> CreateTruckAsync([FromBody] CreateTruckArgs args)
         {
             var command = new CreateTruckCommand(args);
-            await this.mediator.Send(command);
-            var query = new GetTruckQuery(args.Code);
+            var code = await this.mediator.Send(command);
+            var query = new GetTruckQuery(code);
             var result = await this.mediator.Send(query);
             return CreatedAtAction(nameof(GetTruckAsync), new { code = args.Code }, result);
         }
@@ -59,7 +59,15 @@ namespace ERPDemo.Api.Controllers
         [Route("{truckCode}")]
         public async Task<IActionResult> DeleteTruckAsync(string truckCode)
         {
-            throw new NotImplementedException();
+            var query = new GetTruckQuery(truckCode);
+            var truck = await this.mediator.Send(query);
+            if (truck is null)
+            {
+                return NotFound();
+            }
+            var cmd = new DeleteTruckCommand(truckCode);
+            await this.mediator.Send(cmd);
+            return NoContent();
         }
     }
 }

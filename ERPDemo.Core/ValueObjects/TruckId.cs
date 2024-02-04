@@ -6,5 +6,7 @@
             : base(value)
         {
         }
+
+        public static implicit operator TruckId(string value) => new TruckId(value);
     }
 }
