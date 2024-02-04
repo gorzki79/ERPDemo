@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ERPDemo.Infrastructure.ErrorHandling
 {
@@ -38,7 +33,7 @@ namespace ERPDemo.Infrastructure.ErrorHandling
             MethodInfo translateExact = this.GetType().GetMethods().Single(m => m.Name == nameof(Translate) && m.IsGenericMethodDefinition);
             var genericTranslateMethod = translateExact.MakeGenericMethod(exType);
 
-            return (ErrorResponse) genericTranslateMethod.Invoke(this, new[] { exception });
+            return (ErrorResponse) genericTranslateMethod.Invoke(this, new[] { exception })!;
         }
     }
 }

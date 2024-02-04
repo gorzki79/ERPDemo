@@ -9,7 +9,7 @@ namespace ERPDemo.Infrastructure.ErrorHandling
 
         public ErrorResponse(HttpStatusCode status, object data)
         {
-            Status = status;
+            Status = status;    
             Data = data;
         }
     }

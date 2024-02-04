@@ -7,7 +7,7 @@ namespace ERPDemo.Application.Commands
 
     }
 
-    public interface ICommand<out TCommandResult> : IRequest<TCommandResult>, ICommand
+    public interface ICommand<out TCommandResult> : IRequest<TCommandResult>
     {
     }
 }

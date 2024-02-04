@@ -1,6 +1,6 @@
+using ERPDemo.Application;
 using ERPDemo.Application.Commands.Handlers;
 using ERPDemo.Infrastructure;
-using ERPDemo.Persistence;
 using ERPDemo.Persistence.Query.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +15,14 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructure();
+
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssemblies(typeof(GetTrucksQueryHandler).Assembly);
-    cfg.RegisterServicesFromAssemblies(typeof(CreateTruckCommandHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetTrucksQueryHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateTruckCommandHandler).Assembly);
 });
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 
 var app = builder.Build();

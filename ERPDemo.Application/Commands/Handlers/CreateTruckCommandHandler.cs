@@ -3,7 +3,7 @@ using ERPDemo.Core.Repositories;
 
 namespace ERPDemo.Application.Commands.Handlers
 {
-    public class CreateTruckCommandHandler : ICommandHandler<CreateTruckCommand>
+    public class CreateTruckCommandHandler : ICommandHandler<CreateTruckCommand, string>
     {
         private readonly ITruckRepository truckRepository;
 
@@ -12,10 +12,11 @@ namespace ERPDemo.Application.Commands.Handlers
             this.truckRepository = truckRepository;
         }
 
-        public async Task Handle(CreateTruckCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateTruckCommand request, CancellationToken cancellationToken)
         {
-            Truck truck = Truck.CreateNew(request.Args.Code, request.Args.Name, request.Args.Description);
+            Truck truck = Truck.CreateNew(request.Code, request.Name, request.Description);
             await this.truckRepository.CreateTruckAsync(truck, cancellationToken);
+            return truck.Code;
         }
     }
 }
