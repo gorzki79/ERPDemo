@@ -2,6 +2,7 @@
 using ERPDemo.Core.ValueObjects;
 using ERPDemo.Persistence.Data.Entities;
 using ERPDemo.Persistence.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Truck = ERPDemo.Core.Entities.Truck;
 
 namespace ERPDemo.Persistence.Repositories
@@ -30,6 +31,11 @@ namespace ERPDemo.Persistence.Repositories
         public Task<Truck> GetTruckAsync(TruckId truckId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> TruckExistsAsync(TruckId truckId, CancellationToken cancellationToken)
+        {
+            return await this.erpDemoDbContext.Trucks.AnyAsync(t => t.Code == truckId.Value);
         }
 
         public Task UpdateTruckAsync(Truck truck, CancellationToken cancellationToken)
