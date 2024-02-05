@@ -7,7 +7,7 @@ IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'ERPDB')
        USE [ERPDB]
     GO
     
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='TruckStatuses' and xtype='U')
+IF NOT EXISTS (SELECT 1 FROM sysobjects WHERE name='TruckStatuses' and xtype='U')
 BEGIN
     CREATE TABLE TruckStatuses (
         Id INT PRIMARY KEY IDENTITY (1, 1),
@@ -34,7 +34,7 @@ WHEN NOT MATCHED THEN INSERT(Id,Name) VALUES(src.Id, src.Name);
 SET IDENTITY_INSERT TruckStatuses OFF
 
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Trucks' and xtype='U')
+IF NOT EXISTS (SELECT 1 FROM sysobjects WHERE name='Trucks' and xtype='U')
 BEGIN
     CREATE TABLE Trucks (
         Id INT PRIMARY KEY IDENTITY (1, 1),
@@ -61,7 +61,16 @@ VALUES(tsrc.Id, tsrc.Code, tsrc.Name, tsrc.StatusId, tsrc.Description);
 
 SET IDENTITY_INSERT Trucks OFF
 
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name='FK_Trucks_TruckStatuses' AND object_id = OBJECT_ID('Trucks'))
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name='UNQ_Trucks_Code' AND object_id = OBJECT_ID('Trucks'))
+BEGIN
+    CREATE UNIQUE INDEX UNQ_Trucks_Code ON Trucks(Code)
+END
+
+GO
+
+IF (OBJECT_ID('FK_Trucks_TruckStatuses', 'F') IS NULL)
 BEGIN
     ALTER TABLE Trucks ADD CONSTRAINT FK_Trucks_TruckStatuses FOREIGN KEY (StatusId)
     REFERENCES TruckStatuses (Id)
