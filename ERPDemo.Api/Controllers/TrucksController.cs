@@ -50,9 +50,17 @@ namespace ERPDemo.Api.Controllers
 
         [HttpPut]
         [Route("{truckCode}")]
-        public async Task<IActionResult> UpdateTruckAsync(string truckCode)
+        public async Task<IActionResult> UpdateTruckAsync(string truckCode, [FromBody] UpdateTruckArgs args)
         {
-            throw new NotImplementedException();
+            var query = new GetTruckQuery(truckCode);
+            var truck = await this.mediator.Send(query);
+            if (truck is null)
+            {
+                return NotFound();
+            }
+            var cmd = new UpdateTruckCommand(truckCode, args);
+            await this.mediator.Send(cmd);
+            return NoContent();
         }
 
         [HttpDelete]

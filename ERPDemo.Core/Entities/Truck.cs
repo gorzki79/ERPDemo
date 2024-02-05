@@ -6,9 +6,9 @@ namespace ERPDemo.Core.Entities
     public class Truck : AggregatedRoot<TruckId>
     {
         public string Code => this.Id.Value;
-        public string Name { get; }
-        public string? Description { get; }
-        public TruckStatus CurrentStatus { get; }
+        public string Name { get; private set;  }
+        public string? Description { get; private set; }
+        public TruckStatus CurrentStatus { get; private set; }
 
         internal Truck(string code, string name, string? description, TruckStatus currentStatus)
         {
@@ -29,5 +29,19 @@ namespace ERPDemo.Core.Entities
             return truck;
         }
 
+        public void Update(string name, string? description, TruckStatus? status)
+        {
+            this.Name = name;
+            this.Description = description;
+            if (status is not null)
+            {
+                UpdateStatus(status);
+            }
+        }
+
+        private void UpdateStatus(TruckStatus status)
+        {
+            //TODO
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ERPDemo.Core.Entities;
+using ERPDemo.Core.ValueObjects;
 using DbTruck = ERPDemo.Persistence.Data.Entities.Truck;
 
 namespace ERPDemo.Persistence.Extensions
@@ -14,6 +15,12 @@ namespace ERPDemo.Persistence.Extensions
                  Description = truck.Description,
                  StatusId = truck.CurrentStatus.Value
             };
+        }
+
+        public static Truck AsCoreEntity(this DbTruck dbTruck)
+        {
+            var status = TruckStatus.FromValue(dbTruck.StatusId);
+            return Truck.Create(dbTruck.Code, dbTruck.Name, dbTruck.Description, status);
         }
     }
 }

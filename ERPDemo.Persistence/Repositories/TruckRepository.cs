@@ -1,4 +1,5 @@
-﻿using ERPDemo.Core.Repositories;
+﻿using ERPDemo.Core.Entities;
+using ERPDemo.Core.Repositories;
 using ERPDemo.Core.ValueObjects;
 using ERPDemo.Persistence.Data.Entities;
 using ERPDemo.Persistence.Extensions;
@@ -34,9 +35,13 @@ namespace ERPDemo.Persistence.Repositories
 
         }
 
-        public Task<Truck> GetTruckAsync(TruckId truckId, CancellationToken cancellationToken)
+        public async Task<Truck?> GetTruckAsync(TruckId truckId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var dbTruck = await this.erpDemoDbContext.Trucks.SingleOrDefaultAsync(t => t.Code == truckId.Value);
+            if (dbTruck is null)
+                return null;
+
+            return dbTruck.AsCoreEntity();
         }
 
         public async Task<bool> TruckExistsAsync(TruckId truckId, CancellationToken cancellationToken)
@@ -44,9 +49,17 @@ namespace ERPDemo.Persistence.Repositories
             return await this.erpDemoDbContext.Trucks.AnyAsync(t => t.Code == truckId.Value);
         }
 
-        public Task UpdateTruckAsync(Truck truck, CancellationToken cancellationToken)
+        public async Task UpdateTruckAsync(Truck truck, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var dbTruck = await this.erpDemoDbContext.Trucks.SingleOrDefaultAsync(t => t.Code == truck.Id.Value);
+            if (dbTruck is null)
+                throw new InvalidOperationException("Truck being updated no longer exists.");
+
+            dbTruck.Name = truck.Name;
+            dbTruck.Description = truck.Description;
+            dbTruck.StatusId = truck.CurrentStatus.Value;
+
+            await this.erpDemoDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
