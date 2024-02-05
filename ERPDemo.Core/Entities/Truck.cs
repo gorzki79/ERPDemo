@@ -1,4 +1,5 @@
 ﻿using ERPDemo.Core.Entities.Base;
+using ERPDemo.Core.Exceptions;
 using ERPDemo.Core.ValueObjects;
 
 namespace ERPDemo.Core.Entities
@@ -41,7 +42,17 @@ namespace ERPDemo.Core.Entities
 
         private void UpdateStatus(TruckStatus status)
         {
-            //TODO
+            if (this.CurrentStatus == status)
+                return;
+
+            if(this.CurrentStatus.NextAvailableStatuses.Contains(status))
+            {
+                this.CurrentStatus = status;
+            }
+            else
+            {
+                throw new InvalidTruckStatusUpdateException(this.CurrentStatus, status);
+            }
         }
     }
 }

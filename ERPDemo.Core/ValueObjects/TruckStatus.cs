@@ -1,4 +1,7 @@
-﻿namespace ERPDemo.Core.ValueObjects
+﻿using System.Reflection.PortableExecutable;
+using System.Runtime.CompilerServices;
+
+namespace ERPDemo.Core.ValueObjects
 {
     public class TruckStatus : IComparable<TruckStatus>, IEquatable<TruckStatus>
     {
@@ -8,8 +11,19 @@
         public static TruckStatus AtJob { get; } = new TruckStatus(3, "At Job");
         public static TruckStatus Returning { get; } = new TruckStatus(4, "Returning");
 
+        private static Dictionary<TruckStatus, TruckStatus[]> NextAvailableStatusesDictionary = new Dictionary<TruckStatus, TruckStatus[]>
+        {
+            { OutOfService, new TruckStatus[] { Loading, ToJob, AtJob, Returning } },
+            { Loading, new TruckStatus[] { ToJob, OutOfService } },
+            { ToJob, new TruckStatus[] { AtJob, OutOfService } },
+            { AtJob, new TruckStatus[] { Returning, OutOfService } },
+            { Returning, new TruckStatus[] { Loading, OutOfService } }
+        };
+
         public string Name { get; private set; }
         public int Value { get; private set; }
+
+        public IReadOnlyCollection<TruckStatus> NextAvailableStatuses => NextAvailableStatusesDictionary[this].AsReadOnly();
 
         private TruckStatus(int val, string name)
         {
@@ -17,19 +31,19 @@
             Name = name;
         }
 
-        private static IEnumerable<TruckStatus> GetAllStates()
+        private static IEnumerable<TruckStatus> GetAllStatuses()
         {
             return new[] { OutOfService, Loading, ToJob, AtJob, Returning };
         }
 
         public static TruckStatus FromString(string statusString)
         {
-            return GetAllStates().Single(r => String.Equals(r.Name, statusString, StringComparison.OrdinalIgnoreCase));
+            return GetAllStatuses().Single(r => String.Equals(r.Name, statusString, StringComparison.OrdinalIgnoreCase));
         }
 
         public static TruckStatus FromValue(int value)
         {
-            return GetAllStates().Single(r => r.Value == value);
+            return GetAllStatuses().Single(r => r.Value == value);
         }
 
         public int CompareTo(TruckStatus? other)
